@@ -43,14 +43,28 @@ class Point {
 class Wallet {
   // implement Wallet!
   constructor(money) {
+    if(money){
+    this.money = money;
+    }
+    else{
+       this.money = 0;   
+    }
+    
 
   }
 
   credit(amount) {
+    //this.amount = amount;
+  this.money = amount + this.money;
+  //return credit;
 
   }
 
   debit(amount) {
+    //this.amount = amount;
+    this.money = this.money - amount;
+    //return debit;
+
 
   }
 }
@@ -67,6 +81,14 @@ class Wallet {
 * let person = new Person(name, x, y);
 **********************************************************/
 class Person {
+  constructor(name, x, y) {
+    this.name = name;
+    this.location = new Point(x,y);
+    this.wallet = new Wallet();
+}
+  moveTo(point){
+    this.location = point;
+  } 
   // implement Person!
 }
 
@@ -86,8 +108,20 @@ class Person {
 *
 * new vendor = new Vendor(name, x, y);
 **********************************************************/
-class Vendor {
-  // implement Vendor!
+class Vendor extends Person {
+  constructor(){
+  super();
+  this.range = 5;
+  this.price = 1;
+
+  }
+  sellTo(customer, numberOfIceCreams) {
+
+    moveTo(customer.location);
+    ///// TBD
+
+    // implement Vendor!
+  }
 }
 
 
@@ -107,9 +141,21 @@ class Vendor {
 *
 * new customer = new Customer(name, x, y);
 **********************************************************/
-class Customer {
-  // implement Customer!
+class Customer extends Person {
+  constructor(){
+    super();
+  }
+  _isInRange(vendor) {
+    if (vendor.location.distanceTo(vendor.location) <= vendor.range){
+      return true;
+    }
+    else {
+      return false;
+    }
+
+  }
 }
+
 
 
 export {Point, Wallet, Person, Customer, Vendor};
