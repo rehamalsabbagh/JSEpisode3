@@ -109,11 +109,10 @@ class Person {
 * new vendor = new Vendor(name, x, y);
 **********************************************************/
 class Vendor extends Person {
-  constructor(){
-  super();
-  this.range = 5;
-  this.price = 1;
-
+  constructor(name,x,y){
+    super(name,x,y);
+    this.range = 5;
+    this.price = 1;
   }
   sellTo(customer, numberOfIceCreams) {
 
@@ -142,11 +141,11 @@ class Vendor extends Person {
 * new customer = new Customer(name, x, y);
 **********************************************************/
 class Customer extends Person {
-  constructor(){
-    super();
+  constructor(name,x,y){
+    super(name,x,y);
   }
   _isInRange(vendor) {
-    if (vendor.location.distanceTo(vendor.location) <= vendor.range){
+    if (this.location.distanceTo(vendor.location) <= vendor.range){
       return true;
     }
     else {
