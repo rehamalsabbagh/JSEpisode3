@@ -22,8 +22,8 @@ class Point {
   }
 
   static randomPoint(maxX, maxY) {
-    let x = Math.random() * maxX;
-    let y = Math.random() * maxY;
+    let x = Math.random() * (maxX || 100);
+    let y = Math.random() * (maxY || 100);
     return new Point(x, y);
   }
 }
@@ -116,7 +116,12 @@ class Vendor extends Person {
   }
   sellTo(customer, numberOfIceCreams) {
 
-    moveTo(customer.location);
+    this.moveTo(customer.location);
+    let total = (this.price * numberOfIceCreams);
+    if(customer.wallet.money>= total){
+      this.wallet.money += total;
+      customer.wallet.money -= total;     
+    }
     ///// TBD
 
     // implement Vendor!
@@ -143,8 +148,16 @@ class Vendor extends Person {
 class Customer extends Person {
   constructor(name,x,y){
     super(name,x,y);
+    this.wallet = new Wallet(10);
   }
   _isInRange(vendor) {
+    console.log('what distanceTo is returning : ' + this.location.distanceTo(vendor.location));
+    console.log('vendor\'s range : ' + vendor.range);
+    console.log('customer location : ' + this.location);
+    console.log('vendor location : ' + vendor.location.x);
+    console.log('vendor location : ' + vendor.location.y);
+    console.log('result : ' + (this.location.distanceTo(vendor.location) <= vendor.range));
+
     if (this.location.distanceTo(vendor.location) <= vendor.range){
       return true;
     }
@@ -153,7 +166,39 @@ class Customer extends Person {
     }
 
   }
-}
+  _haveEnoughMoney(vendor, numberOfIceCreams) {
+    if (this.wallet.money >= (vendor.price * numberOfIceCreams)) {
+      return true;
+    }
+    else {
+      return false;
+    }
+    
+  }
+  requestIceCream(vendor, numberOfIceCreams) {
+    if (this._isInRange(vendor) && this._haveEnoughMoney(vendor, numberOfIceCreams)) {
+      vendor.sellTo(this, numberOfIceCreams);
+      return true;
+    }
+
+    else if (this._isInRange(vendor)  && (!this._haveEnoughMoney(vendor, numberOfIceCreams)) ) {
+      console.log("GET A JOB");
+      return false;
+    }
+
+    else if ((!this._isInRange(vendor)) && this._haveEnoughMoney(vendor, numberOfIceCreams)) {
+      console.log("you live in the middle of nowhere!");
+      return false;
+    }
+
+    
+
+  } 
+} 
+
+
+
+
 
 
 
